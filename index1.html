@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherished Memories ✨</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Allura&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for ultra-smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(to bottom, #1a1a2e 0%, #2d1b3d 50%, #3d1e3d 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Soft romantic background */
+        .romantic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse at 50% 50%, rgba(255, 182, 193, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 40%, rgba(255, 105, 180, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(186, 85, 211, 0.06) 0%, transparent 50%),
+                linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+        }
+
+        /* Soft ambient light */
+        .ambient-light {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+            animation: gentleGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes gentleGlow {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Header - gentle and subtle */
+        .header {
+            position: absolute;
+            top: 40px;
+            text-align: center;
+            opacity: 0;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            background: linear-gradient(135deg, #ffc3a0 0%, #ff9a9e 50%, #ffd1ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Allura', cursive;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.85rem, 1.3vw, 1rem);
+            color: #ffc3a0;
+            margin-top: 5px;
+            font-style: italic;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        /* Gift Box Container */
+        .gift-box-scene {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            perspective: 1000px;
+        }
+
+        /* Soft spotlight on gift */
+        .spotlight {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.2) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Gift Box Base */
+        .gift-box {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 250px;
+            background: linear-gradient(145deg, #c41e3a, #dc143c);
+            border-radius: 8px;
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                inset 0 -15px 40px rgba(0, 0, 0, 0.3),
+                inset 0 5px 20px rgba(255, 255, 255, 0.1);
+            z-index: 20;
+        }
+
+        /* Ribbon Vertical */
+        .ribbon-vertical {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 100%;
+            background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b);
+            box-shadow: 
+                inset 0 2px 8px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 8px rgba(0, 0, 0, 0.4),
+                0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Ribbon Horizontal */
+        .ribbon-horizontal {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(180deg, #b8860b, #ffd700, #b8860b);
+            box-shadow: 
+                inset 0 2px 8px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Gift Box Lid */
+        .gift-lid {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 90px;
+            background: linear-gradient(145deg, #c41e3a, #dc143c);
+            border-radius: 8px 8px 0 0;
+            box-shadow: 
+                0 -15px 40px rgba(0, 0, 0, 0.3),
+                inset 0 8px 20px rgba(255, 255, 255, 0.15);
+            transform-origin: bottom center;
+            z-index: 15;
+        }
+
+        .lid-ribbon-vertical {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 100%;
+            background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b);
+        }
+
+        /* Bow - elegant and soft */
+        .bow {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 60px;
+            z-index: 16;
+        }
+
+        .bow-left, .bow-right {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 50% 50% 0 50%;
+            box-shadow: 
+                0 8px 20px rgba(255, 215, 0, 0.4),
+                inset 0 2px 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .bow-left {
+            left: 0;
+            transform: rotate(-45deg);
+        }
+
+        .bow-right {
+            right: 0;
+            transform: rotate(45deg);
+        }
+
+        .bow-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(145deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            box-shadow: 
+                0 5px 15px rgba(255, 215, 0, 0.6),
+                inset 0 2px 8px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Floating Photos Container */
+        .photos-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 25;
+        }
+
+        /* Polaroid Photo */
+        .polaroid {
+            position: absolute;
+            width: 200px;
+            height: 260px;
+            background: linear-gradient(145deg, #fff9f9, #ffe8e8);
+            padding: 14px 14px 50px 14px;
+            border-radius: 4px;
+            box-shadow: 
+                0 15px 50px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7),
+                0 0 0 1px rgba(255, 182, 193, 0.2);
+            opacity: 0;
+            z-index: 25;
+        }
+
+        /* Wax seal */
+        .polaroid::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle, #dc143c 0%, #8b0000 100%);
+            border-radius: 50%;
+            opacity: 0.85;
+            box-shadow: 0 3px 10px rgba(220, 20, 60, 0.6);
+        }
+
+        .polaroid-inner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 3px;
+            height: calc(100% - 50px);
+            background: #f5f5f5;
+        }
+
+        .polaroid-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: sepia(0.1) contrast(1.05) brightness(1.02);
+        }
+
+        .polaroid-caption {
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            right: 35px;
+            text-align: center;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #ff6b9d, #ffc3a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Great Vibes', cursive;
+            letter-spacing: 1px;
+        }
+
+        /* SVG Decorations */
+        .romantic-decoration {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.5;
+            width: 22px;
+            height: 22px;
+        }
+
+        .deco-topleft {
+            top: 8px;
+            left: 8px;
+        }
+
+        .deco-topright {
+            top: 8px;
+            right: 8px;
+        }
+
+        /* SVG Definitions */
+        .svg-defs {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+
+        /* Click instruction */
+        .click-instruction {
+            position: absolute;
+            bottom: 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: #ffc3a0;
+            font-style: italic;
+            opacity: 0;
+            animation: softPulse 3s ease-in-out infinite;
+            text-align: center;
+        }
+
+        @keyframes softPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gift-box-scene {
+                width: 300px;
+                height: 400px;
+            }
+
+            .gift-box {
+                width: 240px;
+                height: 200px;
+            }
+
+            .gift-lid {
+                width: 260px;
+                height: 70px;
+            }
+
+            .polaroid {
+                width: 170px;
+                height: 220px;
+                padding: 12px 12px 42px 12px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="romantic-bg"></div>
+    <div class="ambient-light"></div>
+
+    <!-- SVG Definitions -->
+    <svg class="svg-defs">
+        <defs>
+            <symbol id="rose" viewBox="0 0 24 24">
+                <path fill="#ff6b9d" d="M12 2C11 2 10 2.5 9.5 3.5C9 4 9 5 9 6C9 7 9.5 8 10 8.5C10.5 9 11 9 12 9C13 9 13.5 9 14 8.5C14.5 8 15 7 15 6C15 5 15 4 14.5 3.5C14 2.5 13 2 12 2M12 10C11 10 10 10.5 9.5 11C9 11.5 8.5 12.5 8.5 13.5C8.5 14.5 9 15.5 9.5 16C10 16.5 11 17 12 17C13 17 14 16.5 14.5 16C15 15.5 15.5 14.5 15.5 13.5C15.5 12.5 15 11.5 14.5 11C14 10.5 13 10 12 10M7 13C6 13 5 13.5 4.5 14.5C4 15 4 16 4 17C4 18 4.5 19 5 19.5L12 22L19 19.5C19.5 19 20 18 20 17C20 16 20 15 19.5 14.5C19 13.5 18 13 17 13C16.5 13 16 13 15.5 13.5C15 13 14 13 13 13H11C10 13 9 13 8.5 13.5C8 13 7.5 13 7 13Z"/>
+            </symbol>
+            
+            <symbol id="heart-flourish" viewBox="0 0 24 24">
+                <path fill="#ffc3a0" d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5C22 12.27 18.6 15.36 13.45 20.03L12 21.35Z"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <div class="container">
+        <div class="header">
+            <h1>Cherished Memories</h1>
+            <p class="subtitle">moments that warm the heart</p>
+        </div>
+
+        <div class="gift-box-scene">
+            <div class="spotlight"></div>
+            <div class="photos-container" id="photosContainer"></div>
+            
+            <div class="bow">
+                <div class="bow-left"></div>
+                <div class="bow-right"></div>
+                <div class="bow-center"></div>
+            </div>
+            
+            <div class="gift-lid" id="giftLid">
+                <div class="lid-ribbon-vertical"></div>
+            </div>
+            
+            <div class="gift-box" id="giftBox">
+                <div class="ribbon-vertical"></div>
+                <div class="ribbon-horizontal"></div>
+            </div>
+            
+            <div class="click-instruction" id="instruction">Click to open</div>
+        </div>
+    </div>
+
+    <script>
+        // 50 romantic captions
+        const captions = [
+            'Love', 'Forever', 'Cherished', 'Beloved', 'Adored', 'Precious', 'Treasured', 'Devotion',
+            'Passion', 'Romance', 'Affection', 'Tenderness', 'Bliss', 'Enchanted', 'Smitten',
+            'Enamored', 'Captivated', 'Entranced', 'Amour', 'Darling', 'Sweetheart', 'Dearest',
+            'Yearning', 'Longing', 'Desire', 'Intimacy', 'Faithfulness', 'Loyalty', 'Trust',
+            'Together', 'United', 'Bonded', 'Connected', 'Soulmates', 'Destiny', 'Eternal',
+            'Everlasting', 'Timeless', 'Infinite', 'Enduring', 'Unwavering', 'Steadfast', 'True',
+            'Genuine', 'Sincere', 'Heartfelt', 'Devoted', 'Committed', 'Promised', 'Vowed'
+        ];
+
+        const decorations = [
+            '<use href="#rose" />',
+            '<use href="#heart-flourish" />'
+        ];
+
+        let currentBatch = 0;
+        let isAnimating = false;
+        const totalImages = 50;
+        const photosPerBatch = 3;
+
+        function createPolaroid(index) {
+            const fileNumber = index + 51;
+            const caption = captions[index % captions.length];
+            const deco1 = decorations[Math.floor(Math.random() * decorations.length)];
+            const deco2 = decorations[Math.floor(Math.random() * decorations.length)];
+            
+            const polaroid = document.createElement('div');
+            polaroid.className = 'polaroid';
+            polaroid.innerHTML = `
+                <svg class="romantic-decoration deco-topleft">${deco1}</svg>
+                <svg class="romantic-decoration deco-topright">${deco2}</svg>
+                <div class="polaroid-inner">
+                    <img 
+                        class="polaroid-image" 
+                        alt="${caption}"
+                        onerror="handleImageError(this, ${fileNumber})"
+                        data-file-num="${fileNumber}"
+                    >
+                </div>
+                <div class="polaroid-caption">${caption}</div>
+            `;
+            
+            return polaroid;
+        }
+
+        function handleImageError(img, fileNum) {
+            if (!img.dataset.formatIndex) {
+                img.dataset.formatIndex = 0;
+            }
+            
+            const formats = ['jpg', 'png', 'heic', 'jpeg'];
+            const currentIndex = parseInt(img.dataset.formatIndex);
+            
+            if (currentIndex < formats.length) {
+                const nextFormat = formats[currentIndex];
+                img.src = `images/File ${fileNum}.${nextFormat}`;
+                img.dataset.formatIndex = currentIndex + 1;
+            } else {
+                const gradients = [
+                    'linear-gradient(135deg, #ff6b9d 0%, #c471ed 100%)',
+                    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                    'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                    'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'
+                ];
+                img.style.background = gradients[fileNum % gradients.length];
+            }
+        }
+
+        function loadImage(img) {
+            const fileNum = img.dataset.fileNum;
+            img.src = `images/File ${fileNum}.jpg`;
+            img.dataset.formatIndex = 1;
+        }
+
+        function floatPhotosGently() {
+            if (isAnimating || currentBatch * photosPerBatch >= totalImages) return;
+            
+            isAnimating = true;
+            
+            // Open lid gently on first batch
+            if (currentBatch === 0) {
+                gsap.to('#giftLid', {
+                    duration: 2.5,
+                    rotationX: -110,
+                    y: -40,
+                    ease: 'power1.inOut'
+                });
+                
+                gsap.to('#instruction', {
+                    duration: 1,
+                    opacity: 0,
+                    ease: 'power1.out'
+                });
+            }
+
+            const container = document.getElementById('photosContainer');
+            const startIndex = currentBatch * photosPerBatch;
+            const endIndex = Math.min(startIndex + photosPerBatch, totalImages);
+            
+            // Create and position photos
+            for (let i = startIndex; i < endIndex; i++) {
+                const polaroid = createPolaroid(i);
+                const offset = (i - startIndex) - 1; // -1, 0, 1 for three photos
+                
+                // Start position (inside box, lower)
+                polaroid.style.left = `calc(50% + ${offset * 25}px)`;
+                polaroid.style.top = '75%';
+                polaroid.style.transform = 'translate(-50%, -50%) scale(0.2)';
+                polaroid.style.zIndex = 30 + i; // Each photo gets higher z-index
+                
+                container.appendChild(polaroid);
+                
+                // Load image
+                const img = polaroid.querySelector('.polaroid-image');
+                loadImage(img);
+                
+                // Gentle floating animation
+                const delay = (i - startIndex) * 0.4;
+                
+                // Rise from the box - adjusted final position to be lower
+                gsap.to(polaroid, {
+                    duration: 4,
+                    delay: delay,
+                    top: '35%',
+                    left: `calc(50% + ${offset * 260}px)`,
+                    scale: 1,
+                    rotation: offset * 8,
+                    opacity: 1,
+                    ease: 'power1.out',
+                    onComplete: function() {
+                        // Gentle floating motion
+                        gsap.to(polaroid, {
+                            duration: 4 + Math.random() * 2,
+                            y: `+=${15 + Math.random() * 10}`,
+                            rotation: `+=${offset * 3}`,
+                            repeat: -1,
+                            yoyo: true,
+                            ease: 'sine.inOut'
+                        });
+                        
+                        // Gentle horizontal drift
+                        gsap.to(polaroid, {
+                            duration: 5 + Math.random() * 3,
+                            x: `+=${Math.random() * 20 - 10}`,
+                            repeat: -1,
+                            yoyo: true,
+                            ease: 'sine.inOut'
+                        });
+                    }
+                });
+            }
+
+            currentBatch++;
+            
+            // Continue with next batch after delay
+            setTimeout(() => {
+                isAnimating = false;
+                if (currentBatch * photosPerBatch < totalImages) {
+                    setTimeout(floatPhotosGently, 3000);
+                }
+            }, 2000);
+        }
+
+        // Click to start
+        document.getElementById('giftBox').addEventListener('click', function() {
+            if (currentBatch === 0) {
+                floatPhotosGently();
+            }
+        });
+
+        document.getElementById('giftLid').addEventListener('click', function() {
+            if (currentBatch === 0) {
+                floatPhotosGently();
+            }
+        });
+
+        // Entrance animations
+        gsap.to('.header', {
+            duration: 2,
+            opacity: 1,
+            y: 0,
+            delay: 0.5,
+            ease: 'power2.out'
+        });
+
+        gsap.from('.gift-box-scene', {
+            duration: 2,
+            scale: 0.8,
+            opacity: 0,
+            delay: 1,
+            ease: 'power2.out'
+        });
+
+        gsap.to('.click-instruction', {
+            duration: 1.5,
+            opacity: 0.7,
+            delay: 2,
+            ease: 'power1.out'
+        });
+
+        // Auto-start after a moment
+        setTimeout(() => {
+            if (currentBatch === 0) {
+                floatPhotosGently();
+            }
+        }, 4000);
+    </script>
+</body>
+</html>

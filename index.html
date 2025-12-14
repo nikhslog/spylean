@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Story ✨</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Allura&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <!-- Three.js for 3D effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- GSAP for smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(to bottom, #1a1a2e 0%, #2d1b3d 50%, #3d1e3d 100%);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Romantic background with animated gradient */
+        .romantic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(255, 105, 180, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(186, 85, 211, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(220, 20, 60, 0.1) 0%, transparent 50%),
+                linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            animation: gradientShift 20s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+        }
+
+        /* Canvas for romantic particles */
+        #romantic-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* SVG Definitions for custom romantic elements */
+        .svg-defs {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3vh;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            background: linear-gradient(135deg, #ff6b9d 0%, #ffc3a0 25%, #ff9a9e 50%, #fad0c4 75%, #ffd1ff 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease infinite;
+            font-family: 'Allura', cursive;
+            letter-spacing: 3px;
+            filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5));
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.9rem, 2vw, 1.3rem);
+            color: #ffc3a0;
+            margin-top: 0.5vh;
+            font-style: italic;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        /* Next Button */
+        .next-button {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            z-index: 100;
+            background: linear-gradient(135deg, #ff6b9d, #ffc3a0);
+            color: #fff;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 
+                0 8px 25px rgba(255, 107, 157, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 1px;
+        }
+
+        .next-button::after {
+            content: '→';
+            font-size: 1.3rem;
+            transition: transform 0.3s ease;
+        }
+
+        .next-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 12px 35px rgba(255, 107, 157, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .next-button:hover::after {
+            transform: translateX(5px);
+        }
+
+        .next-button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Carousel Container - Split screen perfectly */
+        .carousel-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4vh;
+            max-height: 75vh;
+        }
+
+        .carousel-section {
+            height: 35vh;
+            position: relative;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 3vw;
+            position: absolute;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            will-change: transform;
+        }
+
+        .carousel-track-left {
+            animation: scrollLeftSmooth 80s linear infinite;
+        }
+
+        .carousel-track-right {
+            animation: scrollRightSmooth 85s linear infinite;
+        }
+
+        @keyframes scrollLeftSmooth {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scrollRightSmooth {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Polaroid Cards - Romantic Theme */
+        .polaroid {
+            flex-shrink: 0;
+            width: clamp(220px, 20vw, 280px);
+            height: clamp(280px, 28vh, 320px);
+            background: linear-gradient(145deg, #fff5f5, #ffe6e6);
+            padding: 15px 15px 50px 15px;
+            border-radius: 3px;
+            box-shadow: 
+                0 8px 30px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                0 0 0 1px rgba(255, 182, 193, 0.3);
+            transform-origin: center center;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Fixed position for specific polaroids */
+        .polaroid.fixed-left,
+        .polaroid.fixed-right {
+            position: absolute;
+            z-index: 50;
+        }
+
+        .polaroid.fixed-left {
+            left: 10%;
+        }
+
+        .polaroid.fixed-right {
+            right: 10%;
+        }
+
+        /* Wax seal decoration */
+        .polaroid::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle, #dc143c 0%, #8b0000 100%);
+            border-radius: 50%;
+            opacity: 0.8;
+            box-shadow: 0 2px 8px rgba(220, 20, 60, 0.6);
+        }
+
+        .polaroid:nth-child(4n+1) {
+            transform: rotate(-2deg);
+        }
+
+        .polaroid:nth-child(4n+2) {
+            transform: rotate(1.5deg);
+        }
+
+        .polaroid:nth-child(4n+3) {
+            transform: rotate(-1deg);
+        }
+
+        .polaroid:nth-child(4n+4) {
+            transform: rotate(2deg);
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.08) translateY(-8px) !important;
+            box-shadow: 
+                0 20px 60px rgba(255, 105, 180, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                0 0 0 2px rgba(255, 182, 193, 0.6);
+            z-index: 100;
+        }
+
+        .polaroid-inner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+            height: calc(100% - 50px);
+        }
+
+        .polaroid-image,
+        .polaroid-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: all 0.6s ease;
+            filter: sepia(0.15) contrast(1.1);
+        }
+
+        .polaroid:hover .polaroid-image,
+        .polaroid:hover .polaroid-video {
+            transform: scale(1.05);
+            filter: sepia(0.05) contrast(1.15);
+        }
+
+        /* Romantic SVG decorations */
+        .romantic-decoration {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .deco-topleft {
+            top: 5px;
+            left: 5px;
+            width: 25px;
+            height: 25px;
+        }
+
+        .deco-topright {
+            top: 5px;
+            right: 5px;
+            width: 25px;
+            height: 25px;
+        }
+
+        .polaroid-caption {
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            right: 40px;
+            text-align: center;
+            font-size: clamp(1rem, 1.8vw, 1.4rem);
+            background: linear-gradient(135deg, #ff6b9d, #ffc3a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Great Vibes', cursive;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        /* Pause on hover for better viewing */
+        .carousel-section:hover .carousel-track {
+            animation-play-state: paused;
+        }
+
+        /* Floating rose petals */
+        .rose-petal {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        @media (max-width: 768px) {
+            .carousel-section {
+                height: 30vh;
+            }
+
+            .polaroid {
+                width: 180px;
+                height: 240px;
+                padding: 12px 12px 40px 12px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .next-button {
+                top: 20px;
+                right: 20px;
+                padding: 12px 28px;
+                font-size: 1rem;
+            }
+
+            .polaroid.fixed-left {
+                left: 5%;
+            }
+
+            .polaroid.fixed-right {
+                right: 5%;
+            }
+        }
+
+        /* Smooth scrolling optimization */
+        .carousel-track {
+            backface-visibility: hidden;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+    </style>
+</head>
+<body>
+    <div class="romantic-bg"></div>
+    <canvas id="romantic-canvas"></canvas>
+
+    <!-- Next Button -->
+    <a href="index1.html" class="next-button">Next</a>
+
+    <!-- SVG Definitions -->
+    <svg class="svg-defs">
+        <defs>
+            <!-- Rose -->
+            <symbol id="rose" viewBox="0 0 24 24">
+                <path fill="#ff6b9d" d="M12 2C11 2 10 2.5 9.5 3.5C9 4 9 5 9 6C9 7 9.5 8 10 8.5C10.5 9 11 9 12 9C13 9 13.5 9 14 8.5C14.5 8 15 7 15 6C15 5 15 4 14.5 3.5C14 2.5 13 2 12 2M12 10C11 10 10 10.5 9.5 11C9 11.5 8.5 12.5 8.5 13.5C8.5 14.5 9 15.5 9.5 16C10 16.5 11 17 12 17C13 17 14 16.5 14.5 16C15 15.5 15.5 14.5 15.5 13.5C15.5 12.5 15 11.5 14.5 11C14 10.5 13 10 12 10M7 13C6 13 5 13.5 4.5 14.5C4 15 4 16 4 17C4 18 4.5 19 5 19.5L12 22L19 19.5C19.5 19 20 18 20 17C20 16 20 15 19.5 14.5C19 13.5 18 13 17 13C16.5 13 16 13 15.5 13.5C15 13 14 13 13 13H11C10 13 9 13 8.5 13.5C8 13 7.5 13 7 13Z"/>
+            </symbol>
+            
+            <!-- Heart flourish -->
+            <symbol id="heart-flourish" viewBox="0 0 24 24">
+                <path fill="#ffc3a0" d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5C2 5.41 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.41 22 8.5C22 12.27 18.6 15.36 13.45 20.03L12 21.35Z"/>
+                <circle cx="12" cy="8" r="1.5" fill="#ff9a9e" opacity="0.6"/>
+                <circle cx="7" cy="8" r="1" fill="#ffc3a0" opacity="0.4"/>
+                <circle cx="17" cy="8" r="1" fill="#ffc3a0" opacity="0.4"/>
+            </symbol>
+            
+            <!-- Cupid's arrow -->
+            <symbol id="arrow" viewBox="0 0 24 24">
+                <path fill="#ff6b9d" d="M2 12L5 9V11H14V13H5V15L2 12M22 12L19 9V11H16V13H19V15L22 12Z" opacity="0.7"/>
+                <circle cx="12" cy="12" r="2" fill="#dc143c"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <div class="container">
+        <div class="header">
+            <h1>Love Story</h1>
+            <p class="subtitle">cherished moments, eternal memories</p>
+        </div>
+
+        <div class="carousel-wrapper">
+            <!-- First Carousel -->
+            <div class="carousel-section">
+                <div class="carousel-track carousel-track-left" id="track1"></div>
+            </div>
+
+            <!-- Second Carousel -->
+            <div class="carousel-section">
+                <div class="carousel-track carousel-track-right" id="track2"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 50 romantic captions
+        const captions = [
+            'Love', 'Forever', 'Cherished', 'Beloved', 'Adored', 'Precious', 'Treasured', 'Devotion',
+            'Passion', 'Romance', 'Affection', 'Tenderness', 'Bliss', 'Enchanted', 'Smitten',
+            'Enamored', 'Captivated', 'Entranced', 'Amour', 'Darling', 'Sweetheart', 'Dearest',
+            'Yearning', 'Longing', 'Desire', 'Intimacy', 'Devotion', 'Faithfulness', 'Loyalty',
+            'Together', 'United', 'Bonded', 'Connected', 'Soulmates', 'Destiny', 'Eternal',
+            'Everlasting', 'Timeless', 'Infinite', 'Enduring', 'Unwavering', 'Steadfast', 'True',
+            'Genuine', 'Sincere', 'Heartfelt', 'Devoted', 'Committed', 'Promised', 'Vowed'
+        ];
+
+        // SVG decorations - romantic theme
+        const decorations = [
+            '<use href="#rose" />',
+            '<use href="#heart-flourish" />',
+            '<use href="#arrow" />'
+        ];
+
+        // Video file numbers for fixed positions
+        const videoFiles = {
+            track1: { left: 124, right: 136 },
+            track2: { left: 137, right: 138 }
+        };
+
+        function createPolaroid(index, captionIndex, isVideo = false, fileNum = null) {
+            const fileNumber = fileNum || (index + 1);
+            const caption = captions[captionIndex % captions.length];
+            const deco1 = decorations[Math.floor(Math.random() * decorations.length)];
+            const deco2 = decorations[Math.floor(Math.random() * decorations.length)];
+            
+            const mediaElement = isVideo 
+                ? `<video 
+                    class="polaroid-video" 
+                    autoplay 
+                    loop 
+                    muted 
+                    playsinline
+                    src="images/File ${fileNumber}.mov"
+                    onerror="handleVideoError(this, ${fileNumber})"
+                    data-file-num="${fileNumber}"
+                ></video>`
+                : `<img 
+                    class="polaroid-image" 
+                    alt="${caption}"
+                    onerror="handleImageError(this, ${fileNumber})"
+                    data-file-num="${fileNumber}"
+                >`;
+            
+            return `
+                <div class="polaroid">
+                    <svg class="romantic-decoration deco-topleft">${deco1}</svg>
+                    <svg class="romantic-decoration deco-topright">${deco2}</svg>
+                    <div class="polaroid-inner">
+                        ${mediaElement}
+                    </div>
+                    <div class="polaroid-caption">${caption}</div>
+                </div>
+            `;
+        }
+
+        // Handle video loading error
+        function handleVideoError(video, fileNum) {
+            console.log(`Video error for File ${fileNum}`);
+            // Replace with a romantic gradient if video fails
+            const gradients = [
+                'linear-gradient(135deg, #ff6b9d 0%, #c471ed 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+            ];
+            const gradient = gradients[fileNum % gradients.length];
+            video.style.background = gradient;
+        }
+
+        // Handle image loading with format checking
+        function handleImageError(img, fileNum) {
+            if (!img.dataset.formatIndex) {
+                img.dataset.formatIndex = 0;
+            }
+            
+            const formats = ['jpg', 'png', 'heic', 'jpeg'];
+            const currentIndex = parseInt(img.dataset.formatIndex);
+            
+            if (currentIndex < formats.length) {
+                const nextFormat = formats[currentIndex];
+                img.src = `images/File ${fileNum}.${nextFormat}`;
+                img.dataset.formatIndex = currentIndex + 1;
+            } else {
+                // Romantic gradient placeholders
+                const gradients = [
+                    'linear-gradient(135deg, #ff6b9d 0%, #c471ed 100%)',
+                    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                    'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                    'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+                    'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+                ];
+                const gradient = gradients[fileNum % gradients.length];
+                img.style.background = gradient;
+            }
+        }
+
+        function loadImage(img) {
+            const fileNum = img.dataset.fileNum;
+            img.src = `images/File ${fileNum}.jpg`;
+            img.dataset.formatIndex = 1;
+        }
+
+        // Populate carousels
+        const track1 = document.getElementById('track1');
+        let track1Content = '';
+        
+        // First video (File 124) - fixed at left
+        track1Content += `<div class="polaroid fixed-left">${createPolaroid(0, 0, true, videoFiles.track1.left).match(/<svg[\s\S]*<\/div>\s*<\/div>/)[0]}</div>`;
+        
+        // Regular images for track 1 (Files 1-25, excluding positions for videos)
+        for (let i = 0; i < 25; i++) {
+            track1Content += createPolaroid(i, i);
+        }
+        
+        // Second video (File 136) - fixed at right
+        track1Content += `<div class="polaroid fixed-right">${createPolaroid(0, 25, true, videoFiles.track1.right).match(/<svg[\s\S]*<\/div>\s*<\/div>/)[0]}</div>`;
+        
+        // Duplicate for seamless loop
+        track1.innerHTML = track1Content + track1Content;
+
+        const track2 = document.getElementById('track2');
+        let track2Content = '';
+        
+        // Third video (File 137) - fixed at left
+        track2Content += `<div class="polaroid fixed-left">${createPolaroid(0, 26, true, videoFiles.track2.left).match(/<svg[\s\S]*<\/div>\s*<\/div>/)[0]}</div>`;
+        
+        // Regular images for track 2 (Files 26-50, excluding positions for videos)
+        for (let i = 25; i < 50; i++) {
+            track2Content += createPolaroid(i, i);
+        }
+        
+        // Fourth video (File 138) - fixed at right
+        track2Content += `<div class="polaroid fixed-right">${createPolaroid(0, 49, true, videoFiles.track2.right).match(/<svg[\s\S]*<\/div>\s*<\/div>/)[0]}</div>`;
+        
+        // Duplicate for seamless loop
+        track2.innerHTML = track2Content + track2Content;
+
+        // Load images
+        document.querySelectorAll('.polaroid-image').forEach(img => loadImage(img));
+
+        // Romantic canvas particles using Three.js
+        const canvas = document.getElementById('romantic-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.z = 5;
+
+        // Create floating heart particles
+        const heartShape = new THREE.Shape();
+        heartShape.moveTo(0, 0);
+        heartShape.bezierCurveTo(0, -0.3, -0.6, -0.3, -0.6, 0);
+        heartShape.bezierCurveTo(-0.6, 0.3, 0, 0.6, 0, 1);
+        heartShape.bezierCurveTo(0, 0.6, 0.6, 0.3, 0.6, 0);
+        heartShape.bezierCurveTo(0.6, -0.3, 0, -0.3, 0, 0);
+
+        const particles = [];
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+            const geometry = new THREE.ShapeGeometry(heartShape);
+            const material = new THREE.MeshBasicMaterial({
+                color: i % 3 === 0 ? 0xff6b9d : i % 3 === 1 ? 0xffc3a0 : 0xff9a9e,
+                transparent: true,
+                opacity: Math.random() * 0.3 + 0.1
+            });
+            
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.x = Math.random() * 20 - 10;
+            mesh.position.y = Math.random() * 20 - 10;
+            mesh.position.z = Math.random() * 10 - 5;
+            mesh.scale.set(0.1, 0.1, 0.1);
+            
+            particles.push({
+                mesh: mesh,
+                velocity: {
+                    y: Math.random() * 0.01 + 0.005,
+                    x: (Math.random() - 0.5) * 0.005
+                },
+                rotation: Math.random() * 0.02
+            });
+            
+            scene.add(mesh);
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            particles.forEach(particle => {
+                particle.mesh.position.y += particle.velocity.y;
+                particle.mesh.position.x += particle.velocity.x;
+                particle.mesh.rotation.z += particle.rotation;
+
+                if (particle.mesh.position.y > 10) {
+                    particle.mesh.position.y = -10;
+                    particle.mesh.position.x = Math.random() * 20 - 10;
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // GSAP smooth entrance animations
+        gsap.from('.header h1', {
+            duration: 1.5,
+            y: -50,
+            opacity: 0,
+            ease: 'power3.out'
+        });
+
+        gsap.from('.subtitle', {
+            duration: 1.5,
+            y: -30,
+            opacity: 0,
+            delay: 0.3,
+            ease: 'power3.out'
+        });
+
+        gsap.from('.carousel-section', {
+            duration: 1.5,
+            x: -100,
+            opacity: 0,
+            stagger: 0.2,
+            delay: 0.5,
+            ease: 'power3.out'
+        });
+
+        // Animate next button
+        gsap.fromTo('.next-button', 
+            {
+                scale: 0,
+                opacity: 0
+            },
+            {
+                duration: 1,
+                scale: 1,
+                opacity: 1,
+                delay: 2,
+                ease: 'back.out(1.7)'
+            }
+        );
+    </script>
+</body>
+</html>
