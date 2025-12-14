@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cherished Memories ✨</title>
     
     <!-- Google Fonts -->
@@ -16,7 +16,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -28,7 +27,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: none;
         }
 
         /* Soft romantic background */
@@ -75,22 +73,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
         }
 
         /* Header - gentle and subtle */
         .header {
             position: absolute;
-            top: 30px;
+            top: 40px;
             text-align: center;
             opacity: 0;
             z-index: 1;
             width: 100%;
-            padding: 0 20px;
         }
 
         .header h1 {
-            font-size: clamp(1.8rem, 8vw, 3rem);
+            font-size: clamp(2rem, 4vw, 3rem);
             background: linear-gradient(135deg, #ffc3a0 0%, #ff9a9e 50%, #ffd1ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -102,7 +98,7 @@
 
         .subtitle {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(0.75rem, 3vw, 1rem);
+            font-size: clamp(0.85rem, 1.3vw, 1rem);
             color: #ffc3a0;
             margin-top: 5px;
             font-style: italic;
@@ -113,8 +109,8 @@
         /* Gift Box Container */
         .gift-box-scene {
             position: relative;
-            width: min(90vw, 400px);
-            height: min(60vh, 500px);
+            width: 400px;
+            height: 500px;
             perspective: 1000px;
         }
 
@@ -134,11 +130,11 @@
         /* Gift Box Base */
         .gift-box {
             position: absolute;
-            bottom: 15vh;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            width: min(75vw, 300px);
-            height: min(50vw, 250px);
+            width: 300px;
+            height: 250px;
             background: linear-gradient(145deg, #c41e3a, #dc143c);
             border-radius: 8px;
             box-shadow: 
@@ -146,7 +142,6 @@
                 inset 0 -15px 40px rgba(0, 0, 0, 0.3),
                 inset 0 5px 20px rgba(255, 255, 255, 0.1);
             z-index: 20;
-            cursor: pointer;
         }
 
         /* Ribbon Vertical */
@@ -155,7 +150,7 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: min(13vw, 50px);
+            width: 50px;
             height: 100%;
             background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b);
             box-shadow: 
@@ -171,7 +166,7 @@
             left: 0;
             transform: translateY(-50%);
             width: 100%;
-            height: min(13vw, 50px);
+            height: 50px;
             background: linear-gradient(180deg, #b8860b, #ffd700, #b8860b);
             box-shadow: 
                 inset 0 2px 8px rgba(255, 255, 255, 0.4),
@@ -181,11 +176,11 @@
         /* Gift Box Lid */
         .gift-lid {
             position: absolute;
-            top: calc(15vh - 50px);
+            top: -50px;
             left: 50%;
             transform: translateX(-50%);
-            width: min(80vw, 320px);
-            height: min(18vw, 90px);
+            width: 320px;
+            height: 90px;
             background: linear-gradient(145deg, #c41e3a, #dc143c);
             border-radius: 8px 8px 0 0;
             box-shadow: 
@@ -193,7 +188,6 @@
                 inset 0 8px 20px rgba(255, 255, 255, 0.15);
             transform-origin: bottom center;
             z-index: 15;
-            cursor: pointer;
         }
 
         .lid-ribbon-vertical {
@@ -201,7 +195,7 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: min(13vw, 50px);
+            width: 50px;
             height: 100%;
             background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b);
         }
@@ -209,18 +203,18 @@
         /* Bow - elegant and soft */
         .bow {
             position: absolute;
-            top: calc(15vh - 80px);
+            top: -80px;
             left: 50%;
             transform: translateX(-50%);
-            width: min(25vw, 100px);
-            height: min(15vw, 60px);
+            width: 100px;
+            height: 60px;
             z-index: 16;
         }
 
         .bow-left, .bow-right {
             position: absolute;
-            width: min(13vw, 50px);
-            height: min(13vw, 50px);
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #ffd700, #ffed4e);
             border-radius: 50% 50% 0 50%;
             box-shadow: 
@@ -243,8 +237,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: min(8vw, 30px);
-            height: min(8vw, 30px);
+            width: 30px;
+            height: 30px;
             background: linear-gradient(145deg, #ffd700, #ffed4e);
             border-radius: 50%;
             box-shadow: 
@@ -264,10 +258,10 @@
         /* Polaroid Photo */
         .polaroid {
             position: absolute;
-            width: min(45vw, 200px);
-            height: min(58vw, 260px);
+            width: 200px;
+            height: 260px;
             background: linear-gradient(145deg, #fff9f9, #ffe8e8);
-            padding: min(3.5vw, 14px) min(3.5vw, 14px) min(12.5vw, 50px) min(3.5vw, 14px);
+            padding: 14px 14px 50px 14px;
             border-radius: 4px;
             box-shadow: 
                 0 15px 50px rgba(0, 0, 0, 0.4),
@@ -283,8 +277,8 @@
             position: absolute;
             bottom: 10px;
             right: 12px;
-            width: min(7vw, 28px);
-            height: min(7vw, 28px);
+            width: 28px;
+            height: 28px;
             background: radial-gradient(circle, #dc143c 0%, #8b0000 100%);
             border-radius: 50%;
             opacity: 0.85;
@@ -295,7 +289,7 @@
             position: relative;
             overflow: hidden;
             border-radius: 3px;
-            height: calc(100% - min(12.5vw, 50px));
+            height: calc(100% - 50px);
             background: #f5f5f5;
         }
 
@@ -311,9 +305,9 @@
             position: absolute;
             bottom: 12px;
             left: 0;
-            right: min(9vw, 35px);
+            right: 35px;
             text-align: center;
-            font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+            font-size: 1.1rem;
             background: linear-gradient(135deg, #ff6b9d, #ffc3a0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -327,8 +321,8 @@
             position: absolute;
             pointer-events: none;
             opacity: 0.5;
-            width: min(5.5vw, 22px);
-            height: min(5.5vw, 22px);
+            width: 22px;
+            height: 22px;
         }
 
         .deco-topleft {
@@ -348,18 +342,120 @@
             height: 0;
         }
 
+        /* Navigation Buttons */
+        .nav-buttons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            z-index: 10001;
+            pointer-events: none;
+        }
+
+        .nav-buttons a {
+            pointer-events: all;
+        }
+
+        /* Previous Button */
+        .previous-button {
+            background: linear-gradient(135deg, #ff6b9d, #ffc3a0);
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 
+                0 8px 25px rgba(255, 107, 157, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 1px;
+        }
+
+        .previous-button::before {
+            content: '←';
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .previous-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 12px 35px rgba(255, 107, 157, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .previous-button:hover::before {
+            transform: translateX(-5px);
+        }
+
+        .previous-button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Next Button */
+        .next-button {
+            background: linear-gradient(135deg, #ff6b9d, #ffc3a0);
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 
+                0 8px 25px rgba(255, 107, 157, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 1px;
+        }
+
+        .next-button::after {
+            content: '→';
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .next-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 12px 35px rgba(255, 107, 157, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .next-button:hover::after {
+            transform: translateX(5px);
+        }
+
+        .next-button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
         /* Click instruction */
         .click-instruction {
             position: absolute;
-            bottom: 8vh;
+            bottom: 40px;
             font-family: 'Playfair Display', serif;
-            font-size: clamp(0.95rem, 3vw, 1.1rem);
+            font-size: 1.1rem;
             color: #ffc3a0;
             font-style: italic;
             opacity: 0;
             animation: softPulse 3s ease-in-out infinite;
             text-align: center;
-            padding: 0 20px;
         }
 
         @keyframes softPulse {
@@ -367,96 +463,35 @@
             50% { opacity: 0.8; }
         }
 
-        /* Mobile optimizations */
+        /* Responsive */
         @media (max-width: 768px) {
-            .header {
-                top: 20px;
+            .gift-box-scene {
+                width: 300px;
+                height: 400px;
             }
 
             .gift-box {
-                bottom: 20vh;
+                width: 240px;
+                height: 200px;
             }
 
             .gift-lid {
-                top: calc(20vh - 50px);
-            }
-
-            .bow {
-                top: calc(20vh - 80px);
-            }
-
-            .click-instruction {
-                bottom: 12vh;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header {
-                top: 15px;
-            }
-
-            .header h1 {
-                font-size: 1.6rem;
-            }
-
-            .subtitle {
-                font-size: 0.75rem;
-                margin-top: 3px;
-            }
-
-            .gift-box {
-                bottom: 22vh;
-            }
-
-            .gift-lid {
-                top: calc(22vh - 45px);
-            }
-
-            .bow {
-                top: calc(22vh - 70px);
-            }
-
-            .click-instruction {
-                bottom: 14vh;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Landscape mobile */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .header {
-                top: 10px;
-            }
-
-            .header h1 {
-                font-size: 1.4rem;
-            }
-
-            .subtitle {
-                font-size: 0.7rem;
-            }
-
-            .gift-box {
-                bottom: 12vh;
-                height: min(35vw, 180px);
-            }
-
-            .gift-lid {
-                top: calc(12vh - 35px);
-                height: min(14vw, 60px);
-            }
-
-            .bow {
-                top: calc(12vh - 55px);
-            }
-
-            .click-instruction {
-                bottom: 5vh;
+                width: 260px;
+                height: 70px;
             }
 
             .polaroid {
-                width: min(35vw, 150px);
-                height: min(45vw, 195px);
+                width: 170px;
+                height: 220px;
+                padding: 12px 12px 42px 12px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -464,6 +499,12 @@
 <body>
     <div class="romantic-bg"></div>
     <div class="ambient-light"></div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <a href="index.html" class="previous-button">Previous</a>
+        <a href="index2.html" class="next-button">Next</a>
+    </div>
 
     <!-- SVG Definitions -->
     <svg class="svg-defs">
@@ -503,14 +544,11 @@
                 <div class="ribbon-horizontal"></div>
             </div>
             
-            <div class="click-instruction" id="instruction">Tap to open</div>
+            <div class="click-instruction" id="instruction">Click to open</div>
         </div>
     </div>
 
     <script>
-        // Detect if mobile
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
         // 50 romantic captions
         const captions = [
             'Love', 'Forever', 'Cherished', 'Beloved', 'Adored', 'Precious', 'Treasured', 'Devotion',
@@ -530,7 +568,7 @@
         let currentBatch = 0;
         let isAnimating = false;
         const totalImages = 50;
-        const photosPerBatch = isMobile ? 2 : 3; // Fewer photos per batch on mobile
+        const photosPerBatch = 3;
 
         function createPolaroid(index) {
             const fileNumber = index + 51;
@@ -611,20 +649,16 @@
             const startIndex = currentBatch * photosPerBatch;
             const endIndex = Math.min(startIndex + photosPerBatch, totalImages);
             
-            // Calculate spacing based on device
-            const isPortrait = window.innerHeight > window.innerWidth;
-            const spacing = isMobile ? (isPortrait ? 200 : 180) : 260;
-            
             // Create and position photos
             for (let i = startIndex; i < endIndex; i++) {
                 const polaroid = createPolaroid(i);
-                const offset = (i - startIndex) - (photosPerBatch === 2 ? 0.5 : 1);
+                const offset = (i - startIndex) - 1; // -1, 0, 1 for three photos
                 
                 // Start position (inside box, lower)
                 polaroid.style.left = `calc(50% + ${offset * 25}px)`;
                 polaroid.style.top = '75%';
                 polaroid.style.transform = 'translate(-50%, -50%) scale(0.2)';
-                polaroid.style.zIndex = 30 + i;
+                polaroid.style.zIndex = 30 + i; // Each photo gets higher z-index
                 
                 container.appendChild(polaroid);
                 
@@ -633,27 +667,24 @@
                 loadImage(img);
                 
                 // Gentle floating animation
-                const delay = (i - startIndex) * 0.5;
+                const delay = (i - startIndex) * 0.4;
                 
-                // Adjust final position for mobile
-                const finalTop = isMobile ? '30%' : '35%';
-                
-                // Rise from the box
+                // Rise from the box - adjusted final position to be lower
                 gsap.to(polaroid, {
                     duration: 4,
                     delay: delay,
-                    top: finalTop,
-                    left: `calc(50% + ${offset * spacing}px)`,
+                    top: '35%',
+                    left: `calc(50% + ${offset * 260}px)`,
                     scale: 1,
-                    rotation: offset * (isMobile ? 6 : 8),
+                    rotation: offset * 8,
                     opacity: 1,
                     ease: 'power1.out',
                     onComplete: function() {
                         // Gentle floating motion
                         gsap.to(polaroid, {
                             duration: 4 + Math.random() * 2,
-                            y: `+=${12 + Math.random() * 8}`,
-                            rotation: `+=${offset * 2}`,
+                            y: `+=${15 + Math.random() * 10}`,
+                            rotation: `+=${offset * 3}`,
                             repeat: -1,
                             yoyo: true,
                             ease: 'sine.inOut'
@@ -662,7 +693,7 @@
                         // Gentle horizontal drift
                         gsap.to(polaroid, {
                             duration: 5 + Math.random() * 3,
-                            x: `+=${Math.random() * 15 - 7.5}`,
+                            x: `+=${Math.random() * 20 - 10}`,
                             repeat: -1,
                             yoyo: true,
                             ease: 'sine.inOut'
@@ -677,27 +708,23 @@
             setTimeout(() => {
                 isAnimating = false;
                 if (currentBatch * photosPerBatch < totalImages) {
-                    setTimeout(floatPhotosGently, isMobile ? 3500 : 3000);
+                    setTimeout(floatPhotosGently, 3000);
                 }
             }, 2000);
         }
 
-        // Touch event handling
-        function handleInteraction(e) {
-            e.preventDefault();
+        // Click to start
+        document.getElementById('giftBox').addEventListener('click', function() {
             if (currentBatch === 0) {
                 floatPhotosGently();
             }
-        }
+        });
 
-        // Add both click and touch events
-        const giftBox = document.getElementById('giftBox');
-        const giftLid = document.getElementById('giftLid');
-
-        giftBox.addEventListener('click', handleInteraction);
-        giftBox.addEventListener('touchstart', handleInteraction);
-        giftLid.addEventListener('click', handleInteraction);
-        giftLid.addEventListener('touchstart', handleInteraction);
+        document.getElementById('giftLid').addEventListener('click', function() {
+            if (currentBatch === 0) {
+                floatPhotosGently();
+            }
+        });
 
         // Entrance animations
         gsap.to('.header', {
@@ -722,6 +749,35 @@
             delay: 2,
             ease: 'power1.out'
         });
+
+        // Button animations
+        gsap.fromTo('.previous-button',
+            {
+                scale: 0,
+                opacity: 0
+            },
+            {
+                duration: 1,
+                scale: 1,
+                opacity: 1,
+                ease: 'back.out(1.7)',
+                delay: 2.2
+            }
+        );
+
+        gsap.fromTo('.next-button',
+            {
+                scale: 0,
+                opacity: 0
+            },
+            {
+                duration: 1,
+                scale: 1,
+                opacity: 1,
+                ease: 'back.out(1.7)',
+                delay: 2.4
+            }
+        );
 
         // Auto-start after a moment
         setTimeout(() => {
