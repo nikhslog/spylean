@@ -176,8 +176,21 @@
             height: 35vh;
             position: relative;
             overflow: hidden;
+        }
+
+        /* Top carousel with mask */
+        .carousel-section.top-carousel {
             mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
             -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+
+        /* Bottom carousel - fixed videos */
+        .carousel-section.bottom-carousel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2vw;
+            padding: 0 5vw;
         }
 
         .carousel-track {
@@ -193,18 +206,9 @@
             animation: scrollLeftSmooth 80s linear infinite;
         }
 
-        .carousel-track-right {
-            animation: scrollRightSmooth 85s linear infinite;
-        }
-
         @keyframes scrollLeftSmooth {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
-        }
-
-        @keyframes scrollRightSmooth {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
         }
 
         /* Polaroid Cards - Romantic Theme */
@@ -223,21 +227,6 @@
             transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             backdrop-filter: blur(10px);
-        }
-
-        /* Fixed position for specific polaroids */
-        .polaroid.fixed-left,
-        .polaroid.fixed-right {
-            position: absolute;
-            z-index: 50;
-        }
-
-        .polaroid.fixed-left {
-            left: 10%;
-        }
-
-        .polaroid.fixed-right {
-            right: 10%;
         }
 
         /* Wax seal decoration */
@@ -380,12 +369,11 @@
                 font-size: 1rem;
             }
 
-            .polaroid.fixed-left {
-                left: 5%;
-            }
-
-            .polaroid.fixed-right {
-                right: 5%;
+            .bottom-carousel {
+                gap: 1.5vw;
+                padding: 0 2vw;
+                overflow-x: auto;
+                justify-content: flex-start;
             }
         }
 
@@ -435,274 +423,266 @@
         </div>
 
         <div class="carousel-wrapper">
-            <!-- First Carousel -->
-            <div class="carousel-section">
+            <!-- First Carousel - Scrolling Images -->
+            <div class="carousel-section top-carousel">
                 <div class="carousel-track carousel-track-left" id="track1"></div>
             </div>
 
-            <!-- Second Carousel -->
-            <div class="carousel-section">
-                <div class="carousel-track carousel-track-right" id="track2"></div>
-            </div>
+            <!-- Second Carousel - Fixed Videos -->
+            <div class="carousel-section bottom-carousel" id="track2"></div>
         </div>
     </div>
+<script>
+    // 50 romantic captions
+    const captions = [
+        'Love', 'Forever', 'Cherished', 'Beloved', 'Adored', 'Precious', 'Treasured', 'Devotion',
+        'Passion', 'Romance', 'Affection', 'Tenderness', 'Bliss', 'Enchanted', 'Smitten',
+        'Enamored', 'Captivated', 'Entranced', 'Amour', 'Darling', 'Sweetheart', 'Dearest',
+        'Yearning', 'Longing', 'Desire', 'Intimacy', 'Devotion', 'Faithfulness', 'Loyalty',
+        'Together', 'United', 'Bonded', 'Connected', 'Soulmates', 'Destiny', 'Eternal',
+        'Everlasting', 'Timeless', 'Infinite', 'Enduring', 'Unwavering', 'Steadfast', 'True',
+        'Genuine', 'Sincere', 'Heartfelt', 'Devoted', 'Committed', 'Promised', 'Vowed'
+    ];
 
-    <script>
-        // 50 romantic captions
-        const captions = [
-            'Love', 'Forever', 'Cherished', 'Beloved', 'Adored', 'Precious', 'Treasured', 'Devotion',
-            'Passion', 'Romance', 'Affection', 'Tenderness', 'Bliss', 'Enchanted', 'Smitten',
-            'Enamored', 'Captivated', 'Entranced', 'Amour', 'Darling', 'Sweetheart', 'Dearest',
-            'Yearning', 'Longing', 'Desire', 'Intimacy', 'Devotion', 'Faithfulness', 'Loyalty',
-            'Together', 'United', 'Bonded', 'Connected', 'Soulmates', 'Destiny', 'Eternal',
-            'Everlasting', 'Timeless', 'Infinite', 'Enduring', 'Unwavering', 'Steadfast', 'True',
-            'Genuine', 'Sincere', 'Heartfelt', 'Devoted', 'Committed', 'Promised', 'Vowed'
-        ];
+    // SVG decorations - romantic theme
+    const decorations = [
+        '<use href="#rose" />',
+        '<use href="#heart-flourish" />',
+        '<use href="#arrow" />'
+    ];
 
-        // SVG decorations - romantic theme
-        const decorations = [
-            '<use href="#rose" />',
-            '<use href="#heart-flourish" />',
-            '<use href="#arrow" />'
-        ];
+    // Video files for bottom row with their extensions
+    const videoFiles = [
+        { num: 124, ext: 'mp4' },
+        { num: 136, ext: 'mov' },
+        { num: 137, ext: 'mov' },
+        { num: 138, ext: 'mov' },
+        { num: 139, ext: 'mov' }
+    ];
 
-        // Video file numbers for fixed positions
-        const videoFiles = {
-            track1: { left: 124, right: 136 },
-            track2: { left: 137, right: 138 }
-        };
-
-        function createPolaroid(index, captionIndex, isVideo = false, fileNum = null) {
-            const fileNumber = fileNum || (index + 1);
-            const caption = captions[captionIndex % captions.length];
-            const deco1 = decorations[Math.floor(Math.random() * decorations.length)];
-            const deco2 = decorations[Math.floor(Math.random() * decorations.length)];
-            
-            const mediaElement = isVideo 
-                ? `<video 
-                    class="polaroid-video" 
-                    autoplay 
-                    loop 
-                    muted 
-                    playsinline
-                    src="images/File ${fileNumber}.mov"
-                    onerror="handleVideoError(this, ${fileNumber})"
-                    data-file-num="${fileNumber}"
-                ></video>`
-                : `<img 
-                    class="polaroid-image" 
-                    alt="${caption}"
-                    onerror="handleImageError(this, ${fileNumber})"
-                    data-file-num="${fileNumber}"
-                >`;
-            
-            return `
-                <div class="polaroid">
-                    <svg class="romantic-decoration deco-topleft">${deco1}</svg>
-                    <svg class="romantic-decoration deco-topright">${deco2}</svg>
-                    <div class="polaroid-inner">
-                        ${mediaElement}
-                    </div>
-                    <div class="polaroid-caption">${caption}</div>
+    function createPolaroid(index, captionIndex, isVideo = false, fileNum = null, fileExt = 'mov') {
+        const fileNumber = fileNum || (index + 1);
+        const caption = captions[captionIndex % captions.length];
+        const deco1 = decorations[Math.floor(Math.random() * decorations.length)];
+        const deco2 = decorations[Math.floor(Math.random() * decorations.length)];
+        
+        const mediaElement = isVideo 
+            ? `<video 
+                class="polaroid-video" 
+                autoplay 
+                loop 
+                muted 
+                playsinline
+                preload="metadata"
+                src="images-optimized/File ${fileNumber}.${fileExt}"
+                onerror="handleVideoError(this, ${fileNumber})"
+                data-file-num="${fileNumber}"
+            ></video>`
+            : `<img 
+                class="polaroid-image" 
+                alt="${caption}"
+                loading="lazy"
+                onerror="handleImageError(this, ${fileNumber})"
+                data-file-num="${fileNumber}"
+            >`;
+        
+        return `
+            <div class="polaroid">
+                <svg class="romantic-decoration deco-topleft">${deco1}</svg>
+                <svg class="romantic-decoration deco-topright">${deco2}</svg>
+                <div class="polaroid-inner">
+                    ${mediaElement}
                 </div>
-            `;
-        }
+                <div class="polaroid-caption">${caption}</div>
+            </div>
+        `;
+    }
 
-        // Handle video loading error
-        function handleVideoError(video, fileNum) {
-            console.log(`Video error for File ${fileNum}`);
-            // Replace with a romantic gradient if video fails
+    // Handle video loading error
+    function handleVideoError(video, fileNum) {
+        console.log(`Video error for File ${fileNum}`);
+        // Replace with a romantic gradient if video fails
+        const gradients = [
+            'linear-gradient(135deg, #ff6b9d 0%, #c471ed 100%)',
+            'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+        ];
+        const gradient = gradients[fileNum % gradients.length];
+        video.style.background = gradient;
+    }
+
+    // Handle image loading with format checking - now tries WebP first
+    function handleImageError(img, fileNum) {
+        if (!img.dataset.formatIndex) {
+            img.dataset.formatIndex = 0;
+        }
+        
+        // Try WebP first, then fallback to original formats
+        const formats = ['webp', 'jpg', 'png', 'jpeg'];
+        const currentIndex = parseInt(img.dataset.formatIndex);
+        
+        if (currentIndex < formats.length) {
+            const nextFormat = formats[currentIndex];
+            img.src = `images-optimized/File ${fileNum}.${nextFormat}`;
+            img.dataset.formatIndex = currentIndex + 1;
+        } else {
+            // Romantic gradient placeholders
             const gradients = [
                 'linear-gradient(135deg, #ff6b9d 0%, #c471ed 100%)',
-                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+                'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
             ];
             const gradient = gradients[fileNum % gradients.length];
-            video.style.background = gradient;
+            img.style.background = gradient;
         }
+    }
 
-        // Handle image loading with format checking
-        function handleImageError(img, fileNum) {
-            if (!img.dataset.formatIndex) {
-                img.dataset.formatIndex = 0;
-            }
-            
-            const formats = ['jpg', 'png', 'heic', 'jpeg'];
-            const currentIndex = parseInt(img.dataset.formatIndex);
-            
-            if (currentIndex < formats.length) {
-                const nextFormat = formats[currentIndex];
-                img.src = `images/File ${fileNum}.${nextFormat}`;
-                img.dataset.formatIndex = currentIndex + 1;
-            } else {
-                // Romantic gradient placeholders
-                const gradients = [
-                    'linear-gradient(135deg, #ff6b9d 0%, #c471ed 100%)',
-                    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                    'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-                    'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-                    'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
-                ];
-                const gradient = gradients[fileNum % gradients.length];
-                img.style.background = gradient;
-            }
-        }
+    function loadImage(img) {
+        const fileNum = img.dataset.fileNum;
+        // Load optimized WebP format first
+        img.src = `images-optimized/File ${fileNum}.webp`;
+        img.dataset.formatIndex = 1;
+    }
 
-        function loadImage(img) {
-            const fileNum = img.dataset.fileNum;
-            img.src = `images/File ${fileNum}.jpg`;
-            img.dataset.formatIndex = 1;
-        }
+    // Populate top carousel with scrolling images
+    const track1 = document.getElementById('track1');
+    let track1Content = '';
+    
+    // Regular images for track 1 (Files 1-50)
+    for (let i = 0; i < 50; i++) {
+        track1Content += createPolaroid(i, i);
+    }
+    
+    // Duplicate for seamless loop
+    track1.innerHTML = track1Content + track1Content;
 
-        // Populate carousels
-        const track1 = document.getElementById('track1');
-        let track1Content = '';
-        
-        // First video (File 124) - fixed at left
-        track1Content += `<div class="polaroid fixed-left">${createPolaroid(0, 0, true, videoFiles.track1.left).match(/<svg[\s\S]*<\/div>\s*<\/div>/)[0]}</div>`;
-        
-        // Regular images for track 1 (Files 1-25, excluding positions for videos)
-        for (let i = 0; i < 25; i++) {
-            track1Content += createPolaroid(i, i);
-        }
-        
-        // Second video (File 136) - fixed at right
-        track1Content += `<div class="polaroid fixed-right">${createPolaroid(0, 25, true, videoFiles.track1.right).match(/<svg[\s\S]*<\/div>\s*<\/div>/)[0]}</div>`;
-        
-        // Duplicate for seamless loop
-        track1.innerHTML = track1Content + track1Content;
+    // Populate bottom carousel with fixed videos
+    const track2 = document.getElementById('track2');
+    let track2Content = '';
+    
+    videoFiles.forEach((videoFile, index) => {
+        track2Content += createPolaroid(index, index + 25, true, videoFile.num, videoFile.ext);
+    });
+    
+    track2.innerHTML = track2Content;
 
-        const track2 = document.getElementById('track2');
-        let track2Content = '';
-        
-        // Third video (File 137) - fixed at left
-        track2Content += `<div class="polaroid fixed-left">${createPolaroid(0, 26, true, videoFiles.track2.left).match(/<svg[\s\S]*<\/div>\s*<\/div>/)[0]}</div>`;
-        
-        // Regular images for track 2 (Files 26-50, excluding positions for videos)
-        for (let i = 25; i < 50; i++) {
-            track2Content += createPolaroid(i, i);
-        }
-        
-        // Fourth video (File 138) - fixed at right
-        track2Content += `<div class="polaroid fixed-right">${createPolaroid(0, 49, true, videoFiles.track2.right).match(/<svg[\s\S]*<\/div>\s*<\/div>/)[0]}</div>`;
-        
-        // Duplicate for seamless loop
-        track2.innerHTML = track2Content + track2Content;
+    // Load images
+    document.querySelectorAll('.polaroid-image').forEach(img => loadImage(img));
 
-        // Load images
-        document.querySelectorAll('.polaroid-image').forEach(img => loadImage(img));
+    // Romantic canvas particles using Three.js
+    const canvas = document.getElementById('romantic-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.position.z = 5;
 
-        // Romantic canvas particles using Three.js
-        const canvas = document.getElementById('romantic-canvas');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-        
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.position.z = 5;
+    // Create floating heart particles
+    const heartShape = new THREE.Shape();
+    heartShape.moveTo(0, 0);
+    heartShape.bezierCurveTo(0, -0.3, -0.6, -0.3, -0.6, 0);
+    heartShape.bezierCurveTo(-0.6, 0.3, 0, 0.6, 0, 1);
+    heartShape.bezierCurveTo(0, 0.6, 0.6, 0.3, 0.6, 0);
+    heartShape.bezierCurveTo(0.6, -0.3, 0, -0.3, 0, 0);
 
-        // Create floating heart particles
-        const heartShape = new THREE.Shape();
-        heartShape.moveTo(0, 0);
-        heartShape.bezierCurveTo(0, -0.3, -0.6, -0.3, -0.6, 0);
-        heartShape.bezierCurveTo(-0.6, 0.3, 0, 0.6, 0, 1);
-        heartShape.bezierCurveTo(0, 0.6, 0.6, 0.3, 0.6, 0);
-        heartShape.bezierCurveTo(0.6, -0.3, 0, -0.3, 0, 0);
+    const particles = [];
+    const particleCount = 50;
 
-        const particles = [];
-        const particleCount = 50;
-
-        for (let i = 0; i < particleCount; i++) {
-            const geometry = new THREE.ShapeGeometry(heartShape);
-            const material = new THREE.MeshBasicMaterial({
-                color: i % 3 === 0 ? 0xff6b9d : i % 3 === 1 ? 0xffc3a0 : 0xff9a9e,
-                transparent: true,
-                opacity: Math.random() * 0.3 + 0.1
-            });
-            
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.x = Math.random() * 20 - 10;
-            mesh.position.y = Math.random() * 20 - 10;
-            mesh.position.z = Math.random() * 10 - 5;
-            mesh.scale.set(0.1, 0.1, 0.1);
-            
-            particles.push({
-                mesh: mesh,
-                velocity: {
-                    y: Math.random() * 0.01 + 0.005,
-                    x: (Math.random() - 0.5) * 0.005
-                },
-                rotation: Math.random() * 0.02
-            });
-            
-            scene.add(mesh);
-        }
-
-        // Animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-
-            particles.forEach(particle => {
-                particle.mesh.position.y += particle.velocity.y;
-                particle.mesh.position.x += particle.velocity.x;
-                particle.mesh.rotation.z += particle.rotation;
-
-                if (particle.mesh.position.y > 10) {
-                    particle.mesh.position.y = -10;
-                    particle.mesh.position.x = Math.random() * 20 - 10;
-                }
-            });
-
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+    for (let i = 0; i < particleCount; i++) {
+        const geometry = new THREE.ShapeGeometry(heartShape);
+        const material = new THREE.MeshBasicMaterial({
+            color: i % 3 === 0 ? 0xff6b9d : i % 3 === 1 ? 0xffc3a0 : 0xff9a9e,
+            transparent: true,
+            opacity: Math.random() * 0.3 + 0.1
         });
-
-        // GSAP smooth entrance animations
-        gsap.from('.header h1', {
-            duration: 1.5,
-            y: -50,
-            opacity: 0,
-            ease: 'power3.out'
-        });
-
-        gsap.from('.subtitle', {
-            duration: 1.5,
-            y: -30,
-            opacity: 0,
-            delay: 0.3,
-            ease: 'power3.out'
-        });
-
-        gsap.from('.carousel-section', {
-            duration: 1.5,
-            x: -100,
-            opacity: 0,
-            stagger: 0.2,
-            delay: 0.5,
-            ease: 'power3.out'
-        });
-
-        // Animate next button
-        gsap.fromTo('.next-button', 
-            {
-                scale: 0,
-                opacity: 0
+        
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = Math.random() * 20 - 10;
+        mesh.position.y = Math.random() * 20 - 10;
+        mesh.position.z = Math.random() * 10 - 5;
+        mesh.scale.set(0.1, 0.1, 0.1);
+        
+        particles.push({
+            mesh: mesh,
+            velocity: {
+                y: Math.random() * 0.01 + 0.005,
+                x: (Math.random() - 0.5) * 0.005
             },
-            {
-                duration: 1,
-                scale: 1,
-                opacity: 1,
-                delay: 2,
-                ease: 'back.out(1.7)'
+            rotation: Math.random() * 0.02
+        });
+        
+        scene.add(mesh);
+    }
+
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+
+        particles.forEach(particle => {
+            particle.mesh.position.y += particle.velocity.y;
+            particle.mesh.position.x += particle.velocity.x;
+            particle.mesh.rotation.z += particle.rotation;
+
+            if (particle.mesh.position.y > 10) {
+                particle.mesh.position.y = -10;
+                particle.mesh.position.x = Math.random() * 20 - 10;
             }
-        );
-    </script>
+        });
+
+        renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // GSAP smooth entrance animations
+    gsap.from('.header h1', {
+        duration: 1.5,
+        y: -50,
+        opacity: 0,
+        ease: 'power3.out'
+    });
+
+    gsap.from('.subtitle', {
+        duration: 1.5,
+        y: -30,
+        opacity: 0,
+        delay: 0.3,
+        ease: 'power3.out'
+    });
+
+    gsap.from('.carousel-section', {
+        duration: 1.5,
+        x: -100,
+        opacity: 0,
+        stagger: 0.2,
+        delay: 0.5,
+        ease: 'power3.out'
+    });
+
+    // Animate next button
+    gsap.fromTo('.next-button', 
+        {
+            scale: 0,
+            opacity: 0
+        },
+        {
+            duration: 1,
+            scale: 1,
+            opacity: 1,
+            delay: 2,
+            ease: 'back.out(1.7)'
+        }
+    );
+</script>
+    
 </body>
 </html>
